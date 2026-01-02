@@ -1,6 +1,5 @@
-# if you dont use pipenv uncomment the following:
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 #Step1: Setup Audio recorder (ffmpeg & portaudio)
 # ffmpeg, portaudio, pyaudio
@@ -53,13 +52,13 @@ GROQ_API_KEY=os.environ.get("GROQ_API_KEY")
 stt_model="whisper-large-v3"
 
 def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
-    client=Groq(api_key=GROQ_API_KEY)
+    client = Groq(api_key=GROQ_API_KEY)
     
-    audio_file=open(audio_filepath, "rb")
-    transcription=client.audio.transcriptions.create(
-        model=stt_model,
-        file=audio_file,
-        language="en"
-    )
-
+    with open(audio_filepath, "rb") as audio_file:
+        transcription = client.audio.transcriptions.create(
+            model=stt_model,
+            file=audio_file,
+            language="en"
+        )
+    
     return transcription.text
